@@ -48,6 +48,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Bypass Service Worker caching on localhost for smooth local development
+  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {

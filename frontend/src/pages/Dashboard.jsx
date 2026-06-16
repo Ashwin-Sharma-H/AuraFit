@@ -132,7 +132,17 @@ export default function Dashboard({ token, onLogout }) {
   }
 
   if (loading) {
-    return <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>Loading fitness dashboard...</div>
+    return (
+      <div className="aurafit-loader-wrapper">
+        <div className="aurafit-loader-container">
+          <div className="aurafit-loader-spinner">
+            <div className="spinner-inner"></div>
+            <div className="spinner-center">📊</div>
+          </div>
+          <p className="aurafit-loader-text">Loading fitness dashboard...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

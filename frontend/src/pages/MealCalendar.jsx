@@ -277,7 +277,19 @@ export default function MealCalendar({ token, onLogout }) {
     ...bundles.map(b => ({ value: String(b.id), label: b.name }))
   ]
 
-  const progressPercent = (value, goal) => Math.min((value / goal) * 100, 100)
+  if (loading && meals.length === 0) {
+    return (
+      <div className="aurafit-loader-wrapper">
+        <div className="aurafit-loader-container">
+          <div className="aurafit-loader-spinner">
+            <div className="spinner-inner"></div>
+            <div className="spinner-center">📅</div>
+          </div>
+          <p className="aurafit-loader-text">Loading meal calendar...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="meal-calendar-page">

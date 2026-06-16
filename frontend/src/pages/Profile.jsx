@@ -298,34 +298,14 @@ export default function Profile({ token, onLogout }) {
 
   if (loading) {
     return (
-      <div className="profile-loading">
-        <div className="profile-loading-spinner"></div>
-        <p>Loading your profile...</p>
-        <style>{`
-          .profile-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 400px;
-            gap: 16px;
-          }
-          .profile-loading p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-          }
-          .profile-loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(139, 92, 246, 0.15);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: profileSpin 0.8s linear infinite;
-          }
-          @keyframes profileSpin {
-            to { transform: rotate(360deg); }
-          }
-        `}</style>
+      <div className="aurafit-loader-wrapper">
+        <div className="aurafit-loader-container">
+          <div className="aurafit-loader-spinner">
+            <div className="spinner-inner"></div>
+            <div className="spinner-center">⚙️</div>
+          </div>
+          <p className="aurafit-loader-text">Loading your profile...</p>
+        </div>
       </div>
     )
   }

@@ -11,7 +11,9 @@ import Profile from './pages/Profile.jsx'
 export default function App() {
   const [token, setToken] = useState(null)
   const [username, setUsername] = useState('')
-  const [activeTab, setActiveTab] = useState('dashboard')
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem('activeTab') || 'dashboard'
+  })
   const [checkingAuth, setCheckingAuth] = useState(true)
 
   useEffect(() => {
@@ -25,12 +27,20 @@ export default function App() {
     setCheckingAuth(false)
   }, [])
 
+  // Persist the active tab selection on change
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('activeTab', activeTab)
+    }
+  }, [activeTab, token])
+
   const handleLoginSuccess = (userToken, userName) => {
     localStorage.setItem('token', userToken)
     localStorage.setItem('username', userName)
     setToken(userToken)
     setUsername(userName)
     setActiveTab('dashboard')
+    localStorage.setItem('activeTab', 'dashboard')
   };
 
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -38,12 +48,24 @@ export default function App() {
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('username')
+    localStorage.removeItem('activeTab')
     setToken(null)
     setUsername('')
+    setActiveTab('dashboard')
   };
 
   if (checkingAuth) {
-    return <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>Loading AuraFit...</div>
+    return (
+      <div className="aurafit-loader-wrapper" style={{ height: '100vh', background: 'var(--bg-dark)' }}>
+        <div className="aurafit-loader-container">
+          <div className="aurafit-loader-spinner">
+            <div className="spinner-inner"></div>
+            <div className="spinner-center">⚡</div>
+          </div>
+          <p className="aurafit-loader-text">Loading AuraFit...</p>
+        </div>
+      </div>
+    )
   }
 
   if (!token) {
