@@ -8,4 +8,7 @@ django-cors-headers
 python-dotenv
 google-genai
 psycopg2-binary
-dj-database-url
+dj-database-url
+gunicorn
+whitenoise
+
