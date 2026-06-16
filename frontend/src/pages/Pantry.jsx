@@ -236,9 +236,12 @@ export default function Pantry({ token, onLogout }) {
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-        <div className="pantry-loader">
-          <Package size={32} className="loader-icon" />
-          <p>Loading your pantry...</p>
+        <div className="pantry-loader-container">
+          <div className="pantry-loader-spinner">
+            <div className="spinner-inner"></div>
+            <div className="spinner-center">💪</div>
+          </div>
+          <p className="pantry-loader-text">Loading your pantry...</p>
         </div>
       </div>
     )
@@ -986,22 +989,90 @@ export default function Pantry({ token, onLogout }) {
           max-width: 300px;
         }
 
-        /* ── Loading ── */
-        .pantry-loader {
+        /* ── Premium Loading Spinner ── */
+        .pantry-loader-container {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 16px;
-          color: var(--text-muted);
+          gap: 20px;
         }
 
-        .loader-icon {
-          animation: pulse-glow 1.5s ease-in-out infinite;
+        .pantry-loader-spinner {
+          position: relative;
+          width: 80px;
+          height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.08); }
+        /* Spinning Outer Arc with Gradient */
+        .pantry-loader-spinner::before {
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 4px solid transparent;
+          border-top-color: var(--primary);
+          border-right-color: var(--secondary);
+          animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+          box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Inner Ring with reversed spin */
+        .spinner-inner {
+          position: absolute;
+          width: 80%;
+          height: 80%;
+          border-radius: 50%;
+          border: 3px solid transparent;
+          border-bottom-color: var(--secondary);
+          border-left-color: var(--primary);
+          opacity: 0.8;
+          animation: spin-reverse 1.5s linear infinite;
+        }
+
+        /* Pulsing Central Icon */
+        .spinner-center {
+          font-size: 1.8rem;
+          line-height: 1;
+          animation: pulse-icon 1.5s ease-in-out infinite;
+          z-index: 2;
+        }
+
+        /* Smoothly Pulsing Text with Gradient */
+        .pantry-loader-text {
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: var(--text-main);
+          letter-spacing: 0.02em;
+          text-align: center;
+          background: linear-gradient(135deg, #ffffff 40%, var(--text-muted) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: text-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+          0% { transform: rotate(360deg); }
+          100% { transform: rotate(0deg); }
+        }
+
+        @keyframes pulse-icon {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px transparent); }
+          50% { transform: scale(1.15); filter: drop-shadow(0 0 8px var(--primary-glow)); }
+        }
+
+        @keyframes text-pulse {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 1; }
         }
 
         /* ── Modal ── */
