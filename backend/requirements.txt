@@ -1,0 +1,11 @@
+asgiref
+Django
+sqlparse
+tzdata
+requests
+djangorestframework
+django-cors-headers
+python-dotenv
+google-genai
+psycopg2-binary
+dj-database-url
