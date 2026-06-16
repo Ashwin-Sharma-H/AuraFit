@@ -116,7 +116,7 @@ class VertexImagenClient:
         print(f"[Vertex AI Client] Final Imagen prompt: '{prompt}'")
 
         def run_generation():
-            model_name = getattr(settings, "VERTEX_IMAGE_MODEL", "imagen-3.0-generate-002")
+            model_name = getattr(settings, "VERTEX_IMAGE_MODEL", "imagen-3.0-generate")
             response = self.client.models.generate_images(
                 model=model_name,
                 prompt=prompt,
