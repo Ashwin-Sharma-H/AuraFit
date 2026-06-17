@@ -119,4 +119,4 @@ REST_FRAMEWORK = {
 
 # Vertex AI Models Configuration
 VERTEX_TEXT_MODEL = os.getenv("VERTEX_TEXT_MODEL", "gemini-2.5-flash")
-VERTEX_IMAGE_MODEL = os.getenv("VERTEX_IMAGE_MODEL", "imagen-3.0-generate")
+VERTEX_IMAGE_MODEL = os.getenv("VERTEX_IMAGE_MODEL", "gemini-3.1-flash-image")

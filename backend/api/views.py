@@ -156,16 +156,24 @@ class GenerateMealView(APIView):
 
         # Invoke Gemini Client
         planner = GeminiMealPlanner()
-        meal_recommendation = planner.generate_meal(
-            user_profile=profile_data,
-            pantry_items=pantry_names,
-            meal_type=meal_type,
-            excluded_items=excluded_items,
-            preferences=preferences,
-            servings=servings
-        )
-
-        return Response(meal_recommendation, status=status.HTTP_200_OK)
+        try:
+            meal_recommendation = planner.generate_meal(
+                user_profile=profile_data,
+                pantry_items=pantry_names,
+                meal_type=meal_type,
+                excluded_items=excluded_items,
+                preferences=preferences,
+                servings=servings
+            )
+            return Response(meal_recommendation, status=status.HTTP_200_OK)
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"[GenerateMealView] Recipe generation failed: {e}")
+            return Response(
+                {"error": f"Recipe generation failed: {str(e)}. Please retry generation."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 from .imagen_client import VertexImagenClient
 

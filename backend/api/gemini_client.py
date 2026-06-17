@@ -71,7 +71,10 @@ class GeminiMealPlanner:
         
         prompt = f"""
         You are an advanced AI Dietician and Fitness Chef.
-        Recommend a single healthy recipe for {meal_type} based on the following details:
+        Recommend a single healthy recipe for {meal_type} based on the following details.
+        
+        CRITICAL PANTRY REQUIREMENT:
+        You MUST prioritize using the available pantry ingredients list below. The recipe should rely primarily on these pantry ingredients as the main components, and only use basic cooking essentials (like oil, salt, pepper, spices, water, garlic, onions) or minimal outside items if absolutely necessary to complete a healthy meal. Do not invent recipes using main ingredients that are not in the pantry list.
         
         USER FITNESS PROFILE:
         - Fitness Goal: {user_profile.get('fitness_goal', 'maintain_weight')}
@@ -119,8 +122,7 @@ class GeminiMealPlanner:
         """
 
         if not self.is_configured or not self.client:
-            logger.info("Gemini API not configured. Using high-quality mock fallback data.")
-            return self._generate_mock_meal(user_profile, filtered_pantry, meal_type, excluded_items, preferences, servings)
+            raise Exception("Gemini client is not initialized. Please verify your GEMINI_API_KEY setting in .env.")
 
         try:
             model_name = getattr(settings, "VERTEX_TEXT_MODEL", "gemini-2.5-flash")
@@ -135,8 +137,8 @@ class GeminiMealPlanner:
             result_json = json.loads(response.text.strip())
             return result_json
         except Exception as e:
-            logger.error(f"Gemini API invocation failed: {e}. Falling back to mock data.")
-            return self._generate_mock_meal(user_profile, filtered_pantry, meal_type, excluded_items, preferences, servings)
+            logger.error(f"Gemini API invocation failed: {e}")
+            raise Exception(f"API key quota exceeded or server error. Details: {str(e)}")
 
     def _generate_mock_meal(self, user_profile, pantry_items, meal_type, excluded_items=None, preferences="", servings=2):
         """

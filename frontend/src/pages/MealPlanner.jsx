@@ -3136,7 +3136,7 @@ export default function MealPlanner({ token, onLogout }) {
         .recipe-image-container {
           position: relative;
           width: 100%;
-          aspect-ratio: 2 / 1;
+          aspect-ratio: 16 / 9;
           height: auto;
           border-radius: 16px;
           border: 1px solid rgba(255, 255, 255, 0.08);
